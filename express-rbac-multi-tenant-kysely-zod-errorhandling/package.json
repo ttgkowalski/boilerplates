@@ -1,0 +1,46 @@
+{
+  "name": "express-rbac-multi-tenant-kysely-zod-errorhandling",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "dotenv -e .env.dev -- tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "migrate:make": "bun run scripts/migrate-make.ts",
+    "migrate:latest": "bun run scripts/migrate.ts latest",
+    "migrate:latest:prod": "bun run scripts/migrate.ts latest --env=production",
+    "migrate:rollback": "bun run scripts/migrate.ts rollback",
+    "migrate:rollback:all": "bun run scripts/migrate.ts rollback --all",
+    "migrate:up": "bun run scripts/migrate.ts up",
+    "migrate:down": "bun run scripts/migrate.ts down",
+    "migrate:list": "bun run scripts/migrate.ts list",
+    "up:dev": "docker compose --env-file .env.dev up -d",
+    "up:test": "docker compose --env-file .env.test up -d",
+    "up:prod": "docker compose --env-file .env.prod up -d",
+    "down:dev": "docker compose --env-file .env.dev down",
+    "down:test": "docker compose --env-file .env.test down",
+    "down:prod": "docker compose --env-file .env.prod down"
+    },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.15.1",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "knex": "^3.1.0",
+    "kysely": "^0.28.8",
+    "pg": "^8.16.3",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^24.7.2",
+    "@types/pg": "^8.15.5",
+    "dotenv-cli": "^10.0.0"
+  }
+}
