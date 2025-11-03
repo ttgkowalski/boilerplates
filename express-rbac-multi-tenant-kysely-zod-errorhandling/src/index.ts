@@ -12,20 +12,6 @@ const router = Router();
 router.use("/auth", authRoutes);
 router.use("/users", userRoutes);
 
-router.get("/:id", (req, res) => {
-  const { id } = req.params;
-  
-  if (id === "0") {
-    throw new BadRequestError("ID inválido");
-  }
-  
-  if (id === "999") {
-    throw new NotFoundError("User");
-  }
-  
-  res.json({ id, name: "Alice" });
-});
-
 router.get("/ping", (req, res) => {
   res.send("Pong");
 });
