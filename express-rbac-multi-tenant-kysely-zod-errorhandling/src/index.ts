@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 import { GlobalErrorHandler } from "./middlewares/global-error-handler";
-import { BadRequestError, NotFoundError } from "./errors/api-errors";
+import { attachAuth } from "./middlewares/auth";
 import { authRoutes } from "./auth/auth.routes";
 import { userRoutes } from "./user/user.routes";
 
@@ -8,6 +8,7 @@ const app = express();
 app.use(express.json());
 
 const router = Router(); 
+router.use(attachAuth);
 
 router.use("/auth", authRoutes);
 router.use("/users", userRoutes);

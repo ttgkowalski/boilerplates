@@ -9,7 +9,7 @@ export async function up(knex: Knex): Promise<void> {
   });
 
   await knex('tenants').insert({
-    id: `${randomUUID()}`,
+    id: '42a401e2-7d75-4859-8538-000363fe1b26',
     name: 'Tenant Exemplo'
   });
 }

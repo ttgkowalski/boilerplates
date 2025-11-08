@@ -19,10 +19,10 @@ async function verifyPassword(plain: string, hash: string): Promise<boolean> {
 }
 
 function signJwt(user: { id: string; roles: string[]; tenant_id: string | null }): string {
-  const secret: Secret = process.env.JWT_SECRET || "i-am-an-idiot";
+  const secret: Secret = "i-am-an-idiot";
   const options: SignOptions = {
     // ensure correct type narrowing for expiresIn (string like "7d" or number in seconds)
-    expiresIn: (process.env.JWT_EXPIRES_IN || "7d") as unknown as SignOptions["expiresIn"],
+    expiresIn: "7d" as unknown as SignOptions["expiresIn"],
   };
   return sign({ sub: user.id, roles: user.roles, tenant_id: user.tenant_id }, secret, options);
 }
@@ -32,7 +32,7 @@ async function registerUser(inputRaw: unknown): Promise<{ user: User; token: str
     const input = registerSchema.parse(inputRaw);
     const password_hash = await hashPassword(input.password);
     const created = await userRepo.insertUser({
-      tenant_id: "35bf3157-aa86-42fc-af32-2c602d3b8be2",
+      tenant_id: "42a401e2-7d75-4859-8538-000363fe1b26",
       email: input.email,
       password_hash,
       created_at: new Date(),

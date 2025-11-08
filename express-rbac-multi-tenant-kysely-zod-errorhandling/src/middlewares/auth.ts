@@ -25,7 +25,7 @@ export function attachAuth(req: Request, _res: Response, next: NextFunction) {
   }
 
   try {
-    const secret = process.env.JWT_SECRET || "dev-secret-change-me";
+    const secret = "i-am-an-idiot";
     const payload = verify(token, secret) as { sub: string; roles: string[]; tenant_id?: string | null };
     req.auth = { 
       user_id: payload.sub, 
