@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import type { ZodSchema, ZodTypeAny } from "zod";
+import { BadRequestError } from "../errors";
 
 type Schemas = {
   body?: ZodSchema<unknown> | ZodTypeAny;
@@ -30,9 +31,9 @@ export function validateSchema(schemas: Schemas) {
       next();
     } catch (err: any) {
       if (err?.issues) {
-        return res.status(400).json({ errors: err.issues });
+        throw new BadRequestError("Validation error", { cause: err });
       }
-      return res.status(400).json({ error: String(err?.message || err) });
+      throw new BadRequestError(String(err?.message || err), { cause: err });
     }
   };
 }

@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import { verify } from "jsonwebtoken";
+import { UnauthorizedError, ForbiddenError } from "../errors";
 
 declare global {
   namespace Express {
@@ -38,7 +39,7 @@ export function requireRole(requiredRoles: string | string[]) {
 
   return (req: Request, res: Response, next: NextFunction) => {
     if (!req.auth || !req.auth.roles || req.auth.roles.length === 0) {
-      return res.status(401).json({ error: "Unauthorized" });
+      throw new UnauthorizedError("Unauthorized");
     }
 
     // Verificar se o usuário tem pelo menos uma das roles necessárias
@@ -46,7 +47,7 @@ export function requireRole(requiredRoles: string | string[]) {
     const hasRequiredRole = rolesList.some(role => userRoles.includes(role));
 
     if (!hasRequiredRole) {
-      return res.status(403).json({ error: "Forbidden" });
+      throw new ForbiddenError("Forbidden");
     }
 
     next();

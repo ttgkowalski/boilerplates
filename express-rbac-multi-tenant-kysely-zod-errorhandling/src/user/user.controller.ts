@@ -12,13 +12,11 @@ async function list(_req: Request, res: Response) {
 
 async function get(req: Request<{ id: string }>, res: Response) {
   const item = await userService.get(req.params.id);
-  if (!item) return res.status(404).end();
   res.json(item);
 }
 
 async function update(req: Request<{ id: string }>, res: Response) {
   const updated = await userService.update(req.params.id, req.body);
-  if (!updated) return res.status(404).end();
   res.json(updated);
 }
 
