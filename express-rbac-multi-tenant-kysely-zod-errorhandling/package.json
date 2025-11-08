@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "dotenv -e .env.dev -- tsx watch src/index.ts",
+    "compose:up": "docker compose --env-file .env up -d",
+    "compose:down": "docker compose --env-file .env down",
     "start": "dotenv -e .env -- tsx watch src/index.ts",
     "build": "tsc -p tsconfig.json",
     "migrate:make": "pnpm run scripts/migrate-make.ts",
@@ -18,13 +19,7 @@
     "test": "vitest run ; pnpm run clean:test",
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
-    "clean:test": "dotenv -e .env -- tsx scripts/clean-test-data.ts",
-    "up:dev": "docker compose --env-file .env.dev up -d",
-    "up:test": "docker compose --env-file .env.test up -d",
-    "up:prod": "docker compose --env-file .env.prod up -d",
-    "down:dev": "docker compose --env-file .env.dev down",
-    "down:test": "docker compose --env-file .env.test down",
-    "down:prod": "docker compose --env-file .env.prod down"
+    "clean:test": "dotenv -e .env -- tsx scripts/clean-test-data.ts"
   },
   "keywords": [],
   "author": "",
