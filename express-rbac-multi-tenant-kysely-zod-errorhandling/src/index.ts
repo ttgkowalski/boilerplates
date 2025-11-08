@@ -2,6 +2,7 @@ import "reflect-metadata";
 import express, { Router } from "express";
 import { GlobalErrorHandler } from "./middlewares/global-error-handler";
 import { attachAuth } from "./middlewares/auth";
+import { tracingMiddleware } from "./middlewares/tracing";
 import { authRoutes } from "./auth/auth.routes";
 import { userRoutes } from "./user/user.routes";
 import { initializeTracing } from "./tracing";
@@ -11,6 +12,9 @@ initializeTracing();
 
 const app = express();
 app.use(express.json());
+
+// Middleware de tracing deve ser o primeiro para capturar todas as requisições
+app.use(tracingMiddleware);
 
 const router = Router(); 
 router.use(attachAuth);
