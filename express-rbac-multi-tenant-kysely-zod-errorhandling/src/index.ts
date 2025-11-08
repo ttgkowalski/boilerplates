@@ -1,8 +1,13 @@
+import "reflect-metadata";
 import express, { Router } from "express";
 import { GlobalErrorHandler } from "./middlewares/global-error-handler";
 import { attachAuth } from "./middlewares/auth";
 import { authRoutes } from "./auth/auth.routes";
 import { userRoutes } from "./user/user.routes";
+import { initializeTracing } from "./tracing";
+
+// Inicializar tracing antes de qualquer outra coisa
+initializeTracing();
 
 const app = express();
 app.use(express.json());

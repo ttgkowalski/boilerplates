@@ -7,11 +7,11 @@ import { paramsWithIdSchema } from "../../domain/utils";
 
 const userRoutes: ExpressRouter = Router();
 
-userRoutes.post("/", requireRole("User"), validateSchema({ body: createUserSchema }), userController.create);
-userRoutes.get("/", requireRole("User"), userController.list);
-userRoutes.get("/:id", requireRole("User"), validateSchema({ params: paramsWithIdSchema }), userController.get);
-userRoutes.patch("/:id", requireRole("User"), validateSchema({ params: paramsWithIdSchema, body: updateUserSchema }), userController.update);
-userRoutes.delete("/:id", requireRole("User"), validateSchema({ params: paramsWithIdSchema }), userController.remove);
+userRoutes.post("/", requireRole("User"), validateSchema({ body: createUserSchema }), userController.create.bind(userController));
+userRoutes.get("/", requireRole("User"), userController.list.bind(userController));
+userRoutes.get("/:id", requireRole("User"), validateSchema({ params: paramsWithIdSchema }), userController.get.bind(userController));
+userRoutes.patch("/:id", requireRole("User"), validateSchema({ params: paramsWithIdSchema, body: updateUserSchema }), userController.update.bind(userController));
+userRoutes.delete("/:id", requireRole("User"), validateSchema({ params: paramsWithIdSchema }), userController.remove.bind(userController));
 
 export { userRoutes }
 
