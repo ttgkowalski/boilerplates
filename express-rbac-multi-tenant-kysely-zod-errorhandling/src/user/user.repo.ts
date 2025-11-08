@@ -1,4 +1,4 @@
-import { db } from "../db.ts";
+import { db } from "../db";
 import type { User, NewUser, UserUpdate } from "../../domain/user/user.table";
 
 async function insertUser(input: NewUser): Promise<User> {

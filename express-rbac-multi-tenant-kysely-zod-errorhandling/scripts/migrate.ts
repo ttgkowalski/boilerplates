@@ -1,5 +1,5 @@
 import Knex from "knex";
-import config from "../knexfile.ts";
+import config from "../knexfile";
 
 type Env = keyof typeof config;
 

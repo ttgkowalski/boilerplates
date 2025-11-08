@@ -1,8 +1,8 @@
 import express, { Router } from "express";
 import { GlobalErrorHandler } from "./middlewares/global-error-handler";
 import { BadRequestError, NotFoundError } from "./errors/api-errors";
-import { authRoutes } from "./auth/auth.routes.ts";
-import { userRoutes } from "./user/user.routes.ts";
+import { authRoutes } from "./auth/auth.routes";
+import { userRoutes } from "./user/user.routes";
 
 const app = express();
 app.use(express.json());

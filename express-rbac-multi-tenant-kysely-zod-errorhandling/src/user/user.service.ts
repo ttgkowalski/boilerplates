@@ -1,4 +1,4 @@
-import { userRepo } from "./user.repo.ts";
+import { userRepo } from "./user.repo";
 
 export const create = userRepo.insertUser;
 export const list = userRepo.listUsers;

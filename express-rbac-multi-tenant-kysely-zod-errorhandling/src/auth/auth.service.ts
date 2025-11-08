@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import { sign, type SignOptions, type Secret } from "jsonwebtoken";
 import type { Role, NewUser, User } from "../../domain/user/user.table";
-import { userRepo } from "../user/user.repo.ts";
+import { userRepo } from "../user/user.repo";
 import { registerSchema, loginSchema } from "../../domain/authentication";
 
 const SALT_ROUNDS = 10;

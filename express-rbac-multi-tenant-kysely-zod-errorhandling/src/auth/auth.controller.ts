@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { authService } from "./auth.service.ts";
+import { authService } from "./auth.service";
 
 async function register(req: Request, res: Response) {
   const { user, token } = await authService.registerUser(req.body);

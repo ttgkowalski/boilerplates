@@ -1,11 +1,11 @@
-import { Router } from "express";
-import { userController } from "./user.controller.ts";
-import { requireRole } from "../middlewares/auth.ts";
-import { validateSchema } from "../middlewares/validate-schema.ts";
+import { Router, type Router as ExpressRouter } from "express";
+import { userController } from "./user.controller";
+import { requireRole } from "../middlewares/auth";
+import { validateSchema } from "../middlewares/validate-schema";
 import { createUserSchema, updateUserSchema } from "../../domain/user";
 import { paramsWithIdSchema } from "../../domain/utils";
 
-const userRoutes = Router();
+const userRoutes: ExpressRouter = Router();
 
 userRoutes.post("/", requireRole("User"), validateSchema({ body: createUserSchema }), userController.create);
 userRoutes.get("/", requireRole("User"), userController.list);

@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { userService } from "./user.service.ts";
+import { userService } from "./user.service";
 
 async function create(req: Request, res: Response) {
   const created = await userService.create(req.body);
