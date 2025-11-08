@@ -18,13 +18,13 @@ async function verifyPassword(plain: string, hash: string): Promise<boolean> {
   return bcrypt.compare(plain, hash);
 }
 
-function signJwt(user: { id: string; roles: string[] }): string {
+function signJwt(user: { id: string; roles: string[]; tenant_id: string | null }): string {
   const secret: Secret = process.env.JWT_SECRET || "i-am-an-idiot";
   const options: SignOptions = {
     // ensure correct type narrowing for expiresIn (string like "7d" or number in seconds)
     expiresIn: (process.env.JWT_EXPIRES_IN || "7d") as unknown as SignOptions["expiresIn"],
   };
-  return sign({ sub: user.id, roles: user.roles }, secret, options);
+  return sign({ sub: user.id, roles: user.roles, tenant_id: user.tenant_id }, secret, options);
 }
 
 async function registerUser(inputRaw: unknown): Promise<{ user: User; token: string; roles: Role[] }> {
@@ -49,7 +49,11 @@ async function registerUser(inputRaw: unknown): Promise<{ user: User; token: str
     const userRoles = await userRoleRepo.getUserRoles(created.id as unknown as string);
     const roleNames = userRoles.map(r => r.name);
 
-    const token = signJwt({ id: created.id as unknown as string, roles: roleNames });
+    const token = signJwt({ 
+      id: created.id as unknown as string, 
+      roles: roleNames,
+      tenant_id: created.tenant_id 
+    });
     return { user: created, token, roles: userRoles };
   } catch (error: any) {
     if (error.name === "ZodError") {
@@ -78,7 +82,11 @@ async function login(inputRaw: unknown): Promise<{ user: User; token: string; ro
     const userRoles = await userRoleRepo.getUserRoles(existing.id as unknown as string);
     const roleNames = userRoles.map(r => r.name);
     
-    const token = signJwt({ id: existing.id as unknown as string, roles: roleNames });
+    const token = signJwt({ 
+      id: existing.id as unknown as string, 
+      roles: roleNames,
+      tenant_id: existing.tenant_id 
+    });
     return { user: existing, token, roles: userRoles };
   } catch (error: any) {
     if (error.name === "ZodError") {

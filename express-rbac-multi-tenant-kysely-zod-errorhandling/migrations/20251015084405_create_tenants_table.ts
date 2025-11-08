@@ -1,3 +1,4 @@
+import { randomUUID } from "crypto";
 import { Knex } from "knex";
 
 export async function up(knex: Knex): Promise<void> {
@@ -8,6 +9,7 @@ export async function up(knex: Knex): Promise<void> {
   });
 
   await knex('tenants').insert({
+    id: `${randomUUID()}`,
     name: 'Tenant Exemplo'
   });
 }

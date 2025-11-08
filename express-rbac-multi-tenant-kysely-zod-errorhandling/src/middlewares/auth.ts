@@ -6,8 +6,9 @@ declare global {
   namespace Express {
     interface Request {
       auth?: {
-        userId: string;
+        user_id: string;
         roles: string[];
+        tenant_id: string | null;
       };
     }
   }
@@ -25,8 +26,12 @@ export function attachAuth(req: Request, _res: Response, next: NextFunction) {
 
   try {
     const secret = process.env.JWT_SECRET || "dev-secret-change-me";
-    const payload = verify(token, secret) as { sub: string; roles: string[] };
-    req.auth = { userId: payload.sub, roles: payload.roles || [] };
+    const payload = verify(token, secret) as { sub: string; roles: string[]; tenant_id?: string | null };
+    req.auth = { 
+      user_id: payload.sub, 
+      roles: payload.roles || [],
+      tenant_id: payload.tenant_id ?? null
+    };
   } catch (error) {
     console.log("❌ Token verification failed:", error);
     // invalid token: continue without auth; downstream middlewares may require role

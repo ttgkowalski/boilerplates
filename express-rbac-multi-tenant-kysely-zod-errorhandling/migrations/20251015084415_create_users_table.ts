@@ -6,7 +6,6 @@ export async function up(knex: Knex): Promise<void> {
     table.uuid('tenant_id').nullable();
     table.string('email').notNullable().unique();
     table.string('password_hash').notNullable();
-    table.enum('role', ['Admin', 'Manager', 'User']).notNullable();
     table.timestamp('created_at').defaultTo(knex.fn.now()).notNullable();
     
     // Foreign key constraint
