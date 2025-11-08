@@ -9,7 +9,8 @@ const config: Record<string, Knex.Config> = {
       password: `${process.env.DB_PASSWORD}`
     },
     pool: { min: 2, max: 10 },
-    migrations: { tableName: "knex_migrations" }
+    migrations: { tableName: "knex_migrations" },
+    seeds: { directory: "./seeds" }
   },
   staging: {
     client: "pg",
@@ -19,7 +20,8 @@ const config: Record<string, Knex.Config> = {
       password: `${process.env.DB_PASSWORD}`
     },
     pool: { min: 2, max: 10 },
-    migrations: { tableName: "knex_migrations" }
+    migrations: { tableName: "knex_migrations" },
+    seeds: { directory: "./seeds" }
   },
   production: {
     client: "pg",
@@ -29,7 +31,8 @@ const config: Record<string, Knex.Config> = {
       password: `${process.env.DB_PASSWORD}`
     },
     pool: { min: 2, max: 10 },
-    migrations: { tableName: "knex_migrations" }
+    migrations: { tableName: "knex_migrations" },
+    seeds: { directory: "./seeds" }
   }
 };
 

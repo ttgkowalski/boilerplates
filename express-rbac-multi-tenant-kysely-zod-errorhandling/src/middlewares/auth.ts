@@ -1,5 +1,4 @@
 import type { Request, Response, NextFunction } from "express";
-import type { Role } from "../../domain/user/user.table";
 import { verify } from "jsonwebtoken";
 
 declare global {
@@ -7,7 +6,7 @@ declare global {
     interface Request {
       auth?: {
         userId: string;
-        role: Role;
+        roles: string[];
       };
     }
   }
@@ -25,8 +24,8 @@ export function attachAuth(req: Request, _res: Response, next: NextFunction) {
 
   try {
     const secret = process.env.JWT_SECRET || "dev-secret-change-me";
-    const payload = verify(token, secret) as { sub: string; role: Role };
-    req.auth = { userId: payload.sub, role: payload.role };
+    const payload = verify(token, secret) as { sub: string; roles: string[] };
+    req.auth = { userId: payload.sub, roles: payload.roles || [] };
   } catch (error) {
     console.log("❌ Token verification failed:", error);
     // invalid token: continue without auth; downstream middlewares may require role
@@ -34,19 +33,22 @@ export function attachAuth(req: Request, _res: Response, next: NextFunction) {
   next();
 }
 
-export function requireRole(minRole: Role | Role[]) {
-  const order: Record<Role, number> = { Admin: 3, Manager: 2, User: 1 };
-  const rolesList = Array.isArray(minRole) ? minRole : [minRole];
-  const minRank = Math.max(...rolesList.map((r) => order[r]));
+export function requireRole(requiredRoles: string | string[]) {
+  const rolesList = Array.isArray(requiredRoles) ? requiredRoles : [requiredRoles];
 
   return (req: Request, res: Response, next: NextFunction) => {
-    const role = req.auth?.role || "User";
-    const userRank = order[role];
-
-    if (userRank >= minRank) {
-      return next();
+    if (!req.auth || !req.auth.roles || req.auth.roles.length === 0) {
+      return res.status(401).json({ error: "Unauthorized" });
     }
-    
-    return res.status(403).json({ error: "Forbidden" });
+
+    // Verificar se o usuário tem pelo menos uma das roles necessárias
+    const userRoles = req.auth.roles;
+    const hasRequiredRole = rolesList.some(role => userRoles.includes(role));
+
+    if (!hasRequiredRole) {
+      return res.status(403).json({ error: "Forbidden" });
+    }
+
+    next();
   };
 }

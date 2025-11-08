@@ -2,8 +2,8 @@ import type { Request, Response } from "express";
 import { authService } from "./auth.service";
 
 async function register(req: Request, res: Response) {
-  const { user, token } = await authService.registerUser(req.body);
-  res.status(201).json({ user, token });
+  const { user, token, roles } = await authService.registerUser(req.body);
+  res.status(201).json({ user, token, roles });
 }
 
 async function login(req: Request, res: Response) {

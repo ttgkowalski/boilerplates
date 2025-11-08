@@ -6,6 +6,10 @@ export async function up(knex: Knex): Promise<void> {
     table.string('name').notNullable();
     table.timestamp('created_at').defaultTo(knex.fn.now()).notNullable();
   });
+
+  await knex('tenants').insert({
+    name: 'Tenant Exemplo'
+  });
 }
 
 export async function down(knex: Knex): Promise<void> {

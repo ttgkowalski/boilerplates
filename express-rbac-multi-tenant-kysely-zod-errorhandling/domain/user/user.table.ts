@@ -6,14 +6,11 @@ import type {
     Updateable,
 } from 'kysely'
 
-export type Role = "Admin" | "Manager" | "User"
-
 export interface UserTable {
     id: Generated<string>
     tenant_id: string | null // affiliate_id
     email: string
     password_hash: string
-    role: Role
     created_at: ColumnType<Date, Date | undefined, never>
 }
 
