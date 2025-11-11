@@ -1,4 +1,4 @@
-import { Kysely, PostgresDialect } from "kysely";
+import { DummyDriver, Kysely, PostgresAdapter, PostgresDialect, PostgresIntrospector, PostgresQueryCompiler } from 'kysely'
 import { Pool } from "pg";
 
 import type { TenantTable } from "../domain/tenant/tenant.table";
@@ -13,21 +13,26 @@ export interface Database {
   user_roles: UserRoleTable;
 }
 
-const pool = new Pool({
-  host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT),
-  database: process.env.DB_NAME,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  max: 10,
-});
+const dialect = new PostgresDialect({
+  pool: new Pool({
+    database: process.env.DB_NAME,
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    port: Number(process.env.DB_PORT),
+    max: 10,
+  })
+})
 
 export const db = new Kysely<Database>({
-  dialect: new PostgresDialect({ pool }),
-});
+  dialect,
+})
 
-export async function destroyDb(): Promise<void> {
-  await pool.end();
-}
-
-
+export const queryBuilder = new Kysely<Database>({
+  dialect: {
+    createAdapter: () => new PostgresAdapter(),
+    createDriver: () => new DummyDriver(),
+    createIntrospector: (db) => new PostgresIntrospector(db),
+    createQueryCompiler: () => new PostgresQueryCompiler(),
+  },
+})
