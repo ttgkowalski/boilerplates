@@ -13,20 +13,26 @@ export interface Database {
   user_roles: UserRoleTable;
 }
 
+const pool = new Pool({
+  database: process.env.DB_NAME,
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  port: Number(process.env.DB_PORT),
+  max: 10,
+})
+
 const dialect = new PostgresDialect({
-  pool: new Pool({
-    database: process.env.DB_NAME,
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    port: Number(process.env.DB_PORT),
-    max: 10,
-  })
+  pool,
 })
 
 export const db = new Kysely<Database>({
   dialect,
 })
+
+export async function destroyDb(): Promise<void> {
+  await pool.end();
+}
 
 export const queryBuilder = new Kysely<Database>({
   dialect: {

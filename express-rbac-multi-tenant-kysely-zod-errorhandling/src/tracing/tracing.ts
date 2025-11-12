@@ -14,7 +14,9 @@ const sdk = new NodeSDK({
     [SEMRESATTRS_SERVICE_VERSION]: process.env.SERVICE_VERSION || "1.0.0",
   }),
   traceExporter,
-  instrumentations: [getNodeAutoInstrumentations()],
+  instrumentations: [
+    // getNodeAutoInstrumentations()
+  ],
 });
 
 export function initializeTracing() {

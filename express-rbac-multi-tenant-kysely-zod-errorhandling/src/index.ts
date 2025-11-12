@@ -13,14 +13,13 @@ initializeTracing();
 const app = express();
 app.use(express.json());
 
-// Middleware de tracing deve ser o primeiro para capturar todas as requisições
-app.use(tracingMiddleware);
-
 const router = Router(); 
 router.use(attachAuth);
 
 router.use("/auth", authRoutes);
 router.use("/users", userRoutes);
+
+app.use(tracingMiddleware);
 
 router.get("/ping", (req, res) => {
   res.send("Pong");

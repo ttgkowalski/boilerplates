@@ -7,6 +7,7 @@
     "compose:up": "docker compose --env-file .env up -d",
     "compose:down": "docker compose --env-file .env down",
     "start": "dotenv -e .env -- tsx watch src/index.ts",
+    "dev": "dotenv -e .env -- tsx watch src/index.ts",
     "build": "tsc -p tsconfig.json",
     "migrate:make": "tsx scripts/migrate-make.ts",
     "migrate:latest": "dotenv -e .env -- tsx scripts/migrate.ts latest",
